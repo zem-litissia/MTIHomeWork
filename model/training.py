@@ -1,3 +1,4 @@
+# models/training.py
 class TrainingSession:
     def __init__(self, topic, trainer, date):
         self.topic = topic

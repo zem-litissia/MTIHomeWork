@@ -1,3 +1,4 @@
+# models/member.py
 class Member:
     def __init__(self, full_name, email, phone, address, join_date, skills, interests, subscription_status):
         self.full_name = full_name

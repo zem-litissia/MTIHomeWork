@@ -1,30 +1,31 @@
-from club import Club
-from training import TrainingSession
+# main.py
+import csv
+from model.club import Club
+from model.training import TrainingSession
+from manager.CSVStorage import CSVStorage
+from manager.MemberRepository import MemberRepository
+from manager.EventManager import EventManager
+from manager.FinanceManager import FinanceManager
+from manager.HTMLGenerator import HTMLGenerator
+# Create storage
+storage = CSVStorage()
 
-if __name__ == "__main__":
-    # --- Créer le club scientifique ---
-    sci_club = Club("Bouira Scientific Club")
+# Load data using the managers
+member_repo = MemberRepository(storage)
+members = member_repo.load_members("data/members.csv")
 
-    # --- Charger les données CSV ---
-    sci_club.load_members("members.csv")
-    sci_club.load_events("events.csv")
-    sci_club.load_subscriptions("subscriptions.csv")
+event_manager = EventManager(storage)
+events = event_manager.load_events("data/events.csv")
 
-    # --- Créer quelques trainings manuellement (pas de fichier trainings.csv) ---
-    t1 = TrainingSession("AI Workshop", "Ali Mebarki", "2024-11-10")
-    t2 = TrainingSession("Cybersecurity Basics", "Omar Yacine", "2024-12-05")
+finance_manager = FinanceManager(storage)
+subscriptions = finance_manager.load_subscriptions("data/subscriptions.csv")
 
-    sci_club.trainings.append(t1)
-    sci_club.trainings.append(t2)
+# Generate HTML dashboard
+html_gen = HTMLGenerator(
+    name="Scientific Club",
+    members=members,
+    events=events,
+    subscriptions=subscriptions
+)
 
-    # Ajouter quelques participants à titre d’exemple
-    if len(sci_club.members) >= 3:
-        t1.add_participant(sci_club.members[0])
-        t1.add_participant(sci_club.members[1])
-        t2.add_participant(sci_club.members[2])
-
-    # --- Afficher un résumé ---
-    sci_club.summary()
-
-    # --- Générer le tableau de bord HTML ---
-    sci_club.generate_html()
+html_gen.generate_html("outp/club_dashboard.html")

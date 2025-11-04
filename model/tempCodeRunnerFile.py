@@ -1,5 +1,4 @@
 from club import Club
-
 if __name__ == "__main__":
     sci_club = Club("Bouira Scientific Club")
     sci_club.load_members("members.csv")
