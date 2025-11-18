@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Subscriptions - Scientific Club{% endblock %}
+
+{% block content %}
+<h1>Subscription Records</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Member ID</th>
+                <th>Member Name</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subscription in subscriptions %}
+            <tr>
+                <td>{{ subscription.member_id }}</td>
+                <td>{{ subscription.member_name }}</td>
+                <td>${{ subscription.amount }}</td>
+                <td>{{ subscription.date }}</td>
+                <td>
+                    <span class="badge {% if subscription.status == 'paid' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ subscription.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

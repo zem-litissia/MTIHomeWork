@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Events - Scientific Club{% endblock %}
+
+{% block content %}
+<h1>Club Events</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Organizer</th>
+                <th>Participants</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.description }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.organizer }}</td>
+                <td>
+                    {% for participant in event.participants_details %}
+                    <span class="badge bg-secondary">{{ participant }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
