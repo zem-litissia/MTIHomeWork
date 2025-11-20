@@ -1,0 +1,13 @@
+event_name,description,event_date,organizer,participants
+AI Workshop,Introduction to Artificial Intelligence for beginners,2024-04-10,Ali Mebarki,"1,5,10,14"
+Data Science Bootcamp,Hands-on data analysis using Python and Pandas,2024-05-15,Sara Khelifa,"2,8,9,11,12"
+Robotics Challenge,Building and programming autonomous robots,2024-06-25,Omar Yacine,"3,7,15,16,18"
+Cybersecurity Awareness,Ethical hacking and data protection basics,2024-07-05,Lina Zohra,"6,13,19,20,22"
+Scientific Forum,Annual presentation of club research and achievements,2024-09-20,Club Board,"4,10,12,17,23,25"
+Innovation Week,Series of workshops on AI, robotics, and IoT,2024-10-05,Sara Khelifa,"8,9,21,22,26,27,28"
+Python Hackathon,Programming competition on real-world scientific problems,2024-11-10,Ali Mebarki,"5,10,17,18,19,29"
+Machine Learning Seminar,Deep learning trends and applications,2024-12-01,Ladj Merabet Daouia,"14,15,16,30,31"
+Electronics Fair,Showcase of circuit design and IoT prototypes,2025-01-14,Benarous Rachid,"32,33,34,35"
+Women in Science Day,Encouraging female students in STEM fields,2025-02-10,Founas Lydia,"13,24,29,31,36,40"
+Scientific Projects Expo,Presentation of ongoing club projects,2025-03-03,Omar Yacine,"1,2,5,7,10,14,15,25"
+event1,event1,2025-11-20,litissia,

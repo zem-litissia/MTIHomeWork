@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements • Club Scientifique</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #137C8B;
+            --secondary-color: #344D59;
+            --accent-color: #B8CBD0;
+            --light-bg: #F8F9FA;
+            --text-color: #495057;
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--light-bg); color: var(--text-color); padding-top: 56px; }
+        .navbar { background: var(--primary-color); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar-brand { font-weight: 600; color: white !important; }
+        .sidebar { background: var(--secondary-color); min-height: calc(100vh - 56px); padding-top: 20px; position: fixed; width: 250px; transition: all 0.3s; z-index: 100; }
+        .sidebar h4 { color: #fff; font-weight: 600; text-align: center; margin-bottom: 30px; padding: 0 15px; }
+        .sidebar a { color: #fff; padding: 12px 20px; display: flex; align-items: center; text-decoration: none; font-size: 15px; font-weight: 500; border-radius: 8px; margin: 0 10px 5px; transition: all 0.3s; }
+        .sidebar a i { margin-right: 10px; font-size: 18px; }
+        .sidebar a:hover, .sidebar .active { background: var(--accent-color); border-left: 4px solid #00d4ff; }
+        .main-content { margin-left: 250px; padding: 20px; transition: all 0.3s; }
+        .card-custom { border-radius: 18px; box-shadow: 0 3px 15px rgba(0,0,0,0.05); border: none; margin-bottom: 20px; }
+        .card-header-custom { background: white; border-bottom: 1px solid rgba(0,0,0,0.05); border-radius: 18px 18px 0 0 !important; padding: 15px 20px; }
+        .form-label { font-weight: 500; }
+        .btn-primary-custom { color: #fff;background: var(--primary-color); border: none; }
+        .btn-primary-custom:hover { color: #fff;background: var(--secondary-color); }
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-upcoming { background: rgba(40, 167, 69, 0.1); color: #28a745; }
+        .status-completed { background: rgba(108, 117, 125, 0.1); color: #6c757d; }
+        @media (max-width: 992px) { .sidebar { width: 70px; text-align: center; } .sidebar h4 { font-size: 0; } .sidebar h4:after { content: "≡"; font-size: 24px; } .sidebar a span { display: none; } .sidebar a i { margin-right: 0; font-size: 20px; } .main-content { margin-left: 70px; } }
+        @media (max-width: 768px) { .sidebar { width: 100%; height: auto; position: relative; min-height: auto; } .sidebar h4 { font-size: 18px; margin-bottom: 10px; } .sidebar h4:after { content: ""; } .sidebar a { display: inline-block; width: auto; margin: 5px; padding: 8px 15px; } .sidebar a span { display: inline; } .sidebar a i { margin-right: 5px; } .main-content { margin-left: 0; } }
+        .table-responsive { border-radius: 10px; }
+        .table th { background: rgba(10, 23, 78, 0.05); font-weight: 600; }
+    </style>
+</head>
+<body>
+    <!-- Messages Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-3">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="bi bi-atom me-2"></i>Club Scientifique</a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4>Dashboard</h4>
+        <a href="/"><i class="bi bi-house-door"></i><span>Accueil</span></a>
+        <a href="/members"><i class="bi bi-people"></i><span>Membres</span></a>
+        <a href="/events" class="active"><i class="bi bi-calendar-event"></i><span>Événements</span></a>
+        <a href="/subscriptions"><i class="bi bi-card-checklist"></i><span>Abonnements</span></a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold">Gestion des Événements</h3>
+        </div>
+
+        <div class="row">
+           <!-- Liste des événements -->
+            <div class="col-lg-7">
+                <div class="card card-custom">
+                    <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Liste des Événements</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Date</th>
+                                        <th>Organisateur</th>
+                                        <th>Participants</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in events %}
+                                    <tr>
+                                        <td>{{ event.name }}</td>
+                                        <td>{{ event.date }}</td>
+                                        <td>{{ event.organizer }}</td>
+                                        <td>{{ event.participants|length }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <!-- Formulaire ajout -->
+                <div class="col-lg-5">
+                    <div class="card card-custom">
+                        <div class="card-header card-header-custom"><h5 class="mb-0">Ajouter un Événement</h5></div>
+                        <div class="card-body">
+                           <form method="POST">
+                                <div class="mb-3"><label class="form-label">Nom de l'événement</label><input type="text" class="form-control" name="name" placeholder="Nom" required></div>
+                                <div class="mb-3"><label class="form-label">Description</label><textarea class="form-control" name="description" placeholder="Description"></textarea></div>
+                                <div class="mb-3"><label class="form-label">Date</label><input type="date" class="form-control" name="date" required></div>
+                                <div class="mb-3"><label class="form-label">Organisateur</label><input type="text" class="form-control" name="organizer" placeholder="Organisateur"></div>
+                                <button type="submit" class="btn btn-primary-custom w-100">Ajouter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
