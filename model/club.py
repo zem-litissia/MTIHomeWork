@@ -1,23 +1,19 @@
-import csv
-from .member import Member
-from .event import Event
-from .training import TrainingSession
-from .subscription import Subscription
+# models/club.py
 
-# club.py
 class Club:
-    def __init__(self, name):
+    def __init__(self, name, leader=None):
         self.name = name
-        self.member = []
-        self.event = []
-        self.training = []
+        self.members = []
+        self.events = []
+        self.trainings = []
         self.subscriptions = []
-        self.leader = None
-
+        self.leader = leader
 
     def summary(self):
-        print(f"\ Club: {self.name}")
-        print(f" Members: {len(self.member)}")
-        print(f" Events: {len(self.event)}")
-        print(f" Trainings: {len(self.training)}")
-        print(f" Subscriptions: {len(self.subscriptions)}\n")
+        return {
+            "name": self.name,
+            "members": len(self.members),
+            "events": len(self.events),
+            "trainings": len(self.trainings),
+            "subscriptions": len(self.subscriptions)
+        }

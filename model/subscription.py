@@ -1,12 +1,11 @@
 # models/subscription.py
-from interface.Payable import Payable
-class Subscription(Payable):
+
+class Subscription:
     def __init__(self, member_id, amount, date, status):
         self.member_id = member_id
         self.amount = float(amount)
         self.date = date
         self.status = status
 
-    def process_payment(self):
+    def mark_paid(self):
         self.status = "Paid"
-        print(f"Payment processed for member {self.member_id}")
