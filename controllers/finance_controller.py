@@ -20,3 +20,4 @@ def add_subscription():
         CSVStorage.save_subscription(subscription)
         return redirect(url_for('finance.list_subscriptions'))
     return render_template('add_subscription.html')
+# controller

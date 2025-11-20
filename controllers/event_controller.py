@@ -19,4 +19,5 @@ def add_event():
         CSVStorage.save_event(event)
         return redirect(url_for('events.list_events'))
     return render_template('add_event.html')
+# controller
 

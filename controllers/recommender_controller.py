@@ -14,3 +14,4 @@ def recommend():
         recommendations.append((member.name, suitable_events))
 
     return render_template('recommendations.html', recommendations=recommendations)
+# controller

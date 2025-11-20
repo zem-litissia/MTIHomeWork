@@ -19,3 +19,4 @@ def add_member():
         CSVStorage.save_member(member)
         return redirect(url_for('members.list_members'))
     return render_template('add_member.html')
+# controller
