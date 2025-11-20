@@ -1,27 +1,32 @@
 # services/subscription_service.py
-from models.subscription import Subscription
-from .CSVStorage import CSVStorage
-
-SUBSCRIPTIONS_FILE = "data/subscriptions.csv"
+from model.subscription import Subscription
+from services.CSVStorage import CSVStorage
 
 class SubscriptionService:
-    @staticmethod
-    def get_all_subscriptions():
-        data = CSVStorage.load(SUBSCRIPTIONS_FILE)
+    def __init__(self):
+        self.storage = CSVStorage()
+        self.subscriptions_file = "subscriptions.csv"
+    
+    def get_all_subscriptions(self):
+        data = self.storage.load(self.subscriptions_file)
         subscriptions = []
+        
         for row in data:
-            subscriptions.append(Subscription(
-                member_id=int(row['member_id']),
-                amount=float(row['amount']),
-                date=row['date'],
-                status=row['status']
-            ))
+            try:
+                subscriptions.append(Subscription(
+                    member_id=int(row['member_id']),
+                    amount=float(row['amount']),
+                    date=row['date'],
+                    status=row['status']
+                ))
+            except Exception as e:
+                print(f"Erreur traitement abonnement: {e}")
+                continue
+        
         return subscriptions
 
-    @staticmethod
-    def add_subscription(member_id, amount, date, status="pending"):
+    def add_subscription(self, member_id, amount, date, status="pending"):
         try:
-            # Préparer les données
             subscription_data = {
                 'member_id': member_id,
                 'amount': amount,
@@ -29,19 +34,10 @@ class SubscriptionService:
                 'status': status
             }
             
-            # Définir les noms de colonnes
             fieldnames = ['member_id', 'amount', 'date', 'status']
             
-            # Sauvegarder
-            success = CSVStorage.save(SUBSCRIPTIONS_FILE, fieldnames, subscription_data)
-            
-            if success:
-                print(f"Abonnement pour le membre {member_id} ajouté avec succès!")
-            else:
-                print(f"Erreur lors de l'ajout de l'abonnement pour le membre {member_id}")
-                
-            return success
+            return self.storage.save(self.subscriptions_file, fieldnames, subscription_data)
             
         except Exception as e:
-            print(f"Erreur dans add_subscription: {e}")
+            print(f"Erreur add_subscription: {e}")
             return False

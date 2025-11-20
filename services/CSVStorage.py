@@ -3,48 +3,35 @@ import csv
 import os
 
 class CSVStorage:
-    """Classe utilitaire pour lire et écrire des CSV"""
-
-    @staticmethod
-    def load(filename):
+    def __init__(self):
+        self.base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.data_dir = os.path.join(self.base_dir, "data")
+        os.makedirs(self.data_dir, exist_ok=True)
+    
+    def load(self, filename):
         try:
-            print(f"Tentative de chargement de: {filename}")
-            if not os.path.exists(filename):
-                print(f"Fichier {filename} non trouvé, retourne liste vide")
+            filepath = os.path.join(self.data_dir, filename)
+            if not os.path.exists(filepath):
                 return []
             
-            with open(filename, 'r', newline='', encoding="utf-8") as f:
+            with open(filepath, 'r', encoding="utf-8") as f:
                 reader = csv.DictReader(f)
-                data = [row for row in reader]
-                print(f"Chargement réussi: {len(data)} lignes depuis {filename}")
-                return data
+                return [row for row in reader]
         except Exception as e:
-            print(f"ERREUR lors du chargement de {filename}: {e}")
+            print(f"Erreur chargement {filename}: {e}")
             return []
 
-    @staticmethod
-    def save(filename, fieldnames, data):
+    def save(self, filename, fieldnames, data):
         try:
-            print(f"Tentative de sauvegarde dans: {filename}")
-            print(f"Données à sauvegarder: {data}")
+            filepath = os.path.join(self.data_dir, filename)
+            file_exists = os.path.isfile(filepath)
             
-            # Vérifier si le fichier existe
-            file_exists = os.path.isfile(filename)
-            print(f"Fichier existe: {file_exists}")
-            
-            with open(filename, 'a', newline='', encoding="utf-8") as f:
+            with open(filepath, 'a', newline='', encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
-                
-                # Écrire l'en-tête si le fichier n'existe pas
                 if not file_exists:
-                    print("Écriture de l'en-tête...")
                     writer.writeheader()
-                
-                print("Écriture des données...")
                 writer.writerow(data)
-            
-            print(f"SAUVEGARDE RÉUSSIE dans {filename}")
             return True
         except Exception as e:
-            print(f"ERREUR lors de la sauvegarde dans {filename}: {e}")
+            print(f"Erreur sauvegarde {filename}: {e}")
             return False

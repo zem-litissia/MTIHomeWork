@@ -1,33 +1,34 @@
 # services/event_service.py
-from models.event import Event
-from .CSVStorage import CSVStorage
-
-EVENTS_FILE = "data/events.csv"
+from model.event import Event
+from services.CSVStorage import CSVStorage
 
 class EventService:
-    @staticmethod
-    def get_all_events():
-        data = CSVStorage.load(EVENTS_FILE)
+    def __init__(self):
+        self.storage = CSVStorage()
+        self.events_file = "events.csv"
+    
+    def get_all_events(self):
+        data = self.storage.load(self.events_file)
         events = []
+        
         for row in data:
-            # Utiliser les bons noms de colonnes selon votre CSV
-            event_name = row.get('event_name') or row.get('name', '')
-            event_date = row.get('event_date') or row.get('date', '')
-            participants = row.get('participants', '')
-            
-            events.append(Event(
-                name=event_name,
-                description=row.get('description', ''),
-                date=event_date,
-                organizer=row.get('organizer', ''),
-                participants=participants.split(',') if participants else []
-            ))
+            try:
+                participants = row['participants'].split(',') if row.get('participants') else []
+                events.append(Event(
+                    name=row['event_name'],
+                    description=row['description'],
+                    date=row['event_date'],
+                    organizer=row['organizer'],
+                    participants=participants
+                ))
+            except Exception as e:
+                print(f"Erreur traitement événement: {e}")
+                continue
+        
         return events
 
-    @staticmethod
-    def add_event(name, description, date, organizer):
+    def add_event(self, name, description, date, organizer):
         try:
-            # Préparer les données
             event_data = {
                 'event_name': name,
                 'description': description,
@@ -36,19 +37,10 @@ class EventService:
                 'participants': ''
             }
             
-            # Définir les noms de colonnes
             fieldnames = ['event_name', 'description', 'event_date', 'organizer', 'participants']
             
-            # Sauvegarder
-            success = CSVStorage.save(EVENTS_FILE, fieldnames, event_data)
-            
-            if success:
-                print(f"Événement {name} ajouté avec succès!")
-            else:
-                print(f"Erreur lors de l'ajout de l'événement {name}")
-                
-            return success
+            return self.storage.save(self.events_file, fieldnames, event_data)
             
         except Exception as e:
-            print(f"Erreur dans add_event: {e}")
+            print(f"Erreur add_event: {e}")
             return False

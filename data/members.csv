@@ -45,7 +45,5 @@ student_id,full_name,email,phone,address,join_date,subscription_status,skills,in
 44,ROUANE SAMIA,rouane.samia@gmx.com,1601885711,"220 Street 77, Ouargla",12/14/2021,paid,,
 45,HAMBLI RACHID,hambli.rachid@t.yo,1559571953,"300 Street 16, Biskra",06/23/2020,paid,,
 46,BOURAS ROMISSA,bouras.romissa@gmx.com,1788567104,"85 Street 17, Tamanrasset",11/09/2024,pending,,
-<<<<<<< HEAD
-47,litissia Zemmour,litissiazemmour@univ-bouira.dz,123456789,nasim,2025-11-20,paid,,
-=======
->>>>>>> 441c8e0b1a2062db3b3825af7fced7bf66446367
+47,tahraoui bohra,tttt@gamil.com,55677888,,2025-11-13,pending,,
+48,zemmour litissia,litissia.zemmour@univ-bouira.dz,0555914341,777777,2025-11-18,paid,,
