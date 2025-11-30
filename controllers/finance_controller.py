@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from ..models.subscription import Subscription
-from ..storage.csv_storage import CSVStorage
+from ..services.finance_service import FinanceService
 
 bp = Blueprint('finance', __name__, url_prefix='/finance')
 
 @bp.route('/')
 def list_subscriptions():
-    subscriptions = CSVStorage.load_subscriptions()
+    subscriptions = FinanceService.load_subscriptions()
     return render_template('subscriptions.html', subscriptions=subscriptions)
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -16,8 +15,13 @@ def add_subscription():
         amount = float(request.form['amount'])
         date = request.form['date']
         type_ = request.form['type']
-        subscription = Subscription(member_id=member_id, amount=amount, date=date, type_=type_)
-        CSVStorage.save_subscription(subscription)
+
+        FinanceService.add_subscription(
+            member_id=member_id,
+            amount=amount,
+            date=date,
+            type_=type_
+        )
+
         return redirect(url_for('finance.list_subscriptions'))
     return render_template('add_subscription.html')
-# controller

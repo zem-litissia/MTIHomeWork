@@ -1,4 +1,3 @@
-# services/member_service.py
 from model.member import Member
 from services.CSVStorage import CSVStorage
 
@@ -32,7 +31,6 @@ class MemberService:
 
     def add_member(self, full_name, email, phone, address, join_date, skills, interests, subscription_status):
         try:
-            # Générer un nouvel ID
             members = self.get_all_members()
             new_id = max([m.id for m in members]) + 1 if members else 1
             

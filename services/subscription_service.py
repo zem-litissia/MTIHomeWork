@@ -1,4 +1,3 @@
-# services/subscription_service.py
 from model.subscription import Subscription
 from services.CSVStorage import CSVStorage
 

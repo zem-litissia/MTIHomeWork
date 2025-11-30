@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from ..models.member import Member
-from ..storage.csv_storage import CSVStorage
+from ..services.member_service import MemberService
 
 bp = Blueprint('members', __name__, url_prefix='/members')
 
 @bp.route('/')
 def list_members():
-    members = CSVStorage.load_members()
+    members = MemberService.load_members()
     return render_template('members.html', members=members)
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -15,8 +14,12 @@ def add_member():
         name = request.form['name']
         major = request.form['major']
         skills = request.form['skills'].split(',')
-        member = Member(name=name, major=major, skills=skills)
-        CSVStorage.save_member(member)
+
+        MemberService.add_member(
+            name=name,
+            major=major,
+            skills=skills
+        )
+
         return redirect(url_for('members.list_members'))
     return render_template('add_member.html')
-# controller

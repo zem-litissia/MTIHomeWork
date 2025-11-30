@@ -1,12 +1,25 @@
-# services/CSVStorage.py
 import csv
 import os
+import threading
 
 class CSVStorage:
+    _instance = None
+    _lock = threading.Lock()
+
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._initialized = False
+            return cls._instance
+
     def __init__(self):
+        if self._initialized:
+            return
         self.base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         self.data_dir = os.path.join(self.base_dir, "data")
         os.makedirs(self.data_dir, exist_ok=True)
+        self._initialized = True
     
     def load(self, filename):
         try:
