@@ -1,15 +1,16 @@
-from model.subscription import Subscription
 from services.CSVStorage import CSVStorage
+from observer.subject import SubjectMixin
+from model.subscription import Subscription
 
-class SubscriptionService:
+class SubscriptionService(SubjectMixin):
     def __init__(self):
+        super().__init__()
         self.storage = CSVStorage()
         self.subscriptions_file = "subscriptions.csv"
-    
+
     def get_all_subscriptions(self):
         data = self.storage.load(self.subscriptions_file)
         subscriptions = []
-        
         for row in data:
             try:
                 subscriptions.append(Subscription(
@@ -18,25 +19,24 @@ class SubscriptionService:
                     date=row['date'],
                     status=row['status']
                 ))
-            except Exception as e:
-                print(f"Erreur traitement abonnement: {e}")
+            except:
                 continue
-        
         return subscriptions
 
     def add_subscription(self, member_id, amount, date, status="pending"):
-        try:
-            subscription_data = {
-                'member_id': member_id,
-                'amount': amount,
-                'date': date,
-                'status': status
-            }
-            
-            fieldnames = ['member_id', 'amount', 'date', 'status']
-            
-            return self.storage.save(self.subscriptions_file, fieldnames, subscription_data)
-            
-        except Exception as e:
-            print(f"Erreur add_subscription: {e}")
-            return False
+        subscription_data = {
+            'member_id': member_id,
+            'amount': amount,
+            'date': date,
+            'status': status
+        }
+        fieldnames = ['member_id', 'amount', 'date', 'status']
+        result = self.storage.save(self.subscriptions_file, fieldnames, subscription_data)
+
+        if result:
+            self.notify({
+                "event": "subscription_created",
+                "member_id": member_id,
+                "amount": amount
+            })
+        return result

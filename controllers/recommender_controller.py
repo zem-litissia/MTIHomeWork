@@ -6,6 +6,5 @@ facade = ClubFacade()
 
 @bp.route('/')
 def recommend():
-    # إذا عندك RecommenderService داخل Facade نقدر نربطوه هنا
     recommendations = facade.recommender_service.recommend()
     return render_template('recommendations.html', recommendations=recommendations)

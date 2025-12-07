@@ -3,20 +3,25 @@ from flask import Flask, render_template, request, redirect, flash
 from services.member_service import MemberService
 from services.event_service import EventService
 from services.subscription_service import SubscriptionService
+from observer.email_notifier import EmailNotifier
 import os
 import datetime
 
 app = Flask(__name__)
 app.secret_key = 'votre_cle_secrete_ici'  # Pour les messages flash
 
-# Initialiser les services
+
 member_service = MemberService()
 event_service = EventService()
 subscription_service = SubscriptionService()
 
-# ==========================
-# Dashboard
-# ==========================
+
+email_notifier = EmailNotifier()
+member_service.attach(email_notifier)
+event_service.attach(email_notifier)
+subscription_service.attach(email_notifier)
+
+
 @app.route('/')
 def dashboard():
     try:
