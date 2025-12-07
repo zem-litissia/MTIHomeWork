@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from ..services.finance_service import FinanceService
+from ..services.ClubFacade import ClubFacade
 
 bp = Blueprint('finance', __name__, url_prefix='/finance')
+facade = ClubFacade()
 
 @bp.route('/')
 def list_subscriptions():
-    subscriptions = FinanceService.load_subscriptions()
+    subscriptions = facade.subscription_service.get_all_subscriptions()
     return render_template('subscriptions.html', subscriptions=subscriptions)
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -14,14 +15,15 @@ def add_subscription():
         member_id = request.form['member_id']
         amount = float(request.form['amount'])
         date = request.form['date']
-        type_ = request.form['type']
+        status = request.form.get('status', "pending")
 
-        FinanceService.add_subscription(
+        facade.add_subscription(
             member_id=member_id,
             amount=amount,
             date=date,
-            type_=type_
+            status=status
         )
 
         return redirect(url_for('finance.list_subscriptions'))
+
     return render_template('add_subscription.html')
