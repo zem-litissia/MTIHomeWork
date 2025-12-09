@@ -1,180 +1,629 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Membres • Club Scientifique</title>
+    <title>الأعضاء • النادي العلمي</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #137C8B;
-            --secondary-color: #344D59;
-            --accent-color: #B8CBD0;
-            --light-bg: #F8F9FA;
-            --text-color: #495057;
+            --primary-color: #2E7D32;
+            --secondary-color: #4CAF50;
+            --accent-color: #00C853;
+            --light-accent-color: #81C784;
+            --background-color: #F5F5F5;
+            --card-bg: #FFFFFF;
+            --text-color: #212121;
+            --shadow-soft: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-large: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --danger-color: #dc3545;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--light-bg);
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--background-color);
             color: var(--text-color);
-            padding-top: 56px;
+            padding-top: 80px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-        .navbar {
-            background: var(--primary-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-weight: 600;
-            color: white !important;
-        }
-        .sidebar {
-            background: var(--secondary-color);
-            min-height: calc(100vh - 56px);
-            padding-top: 20px;
+
+        body::before {
+            content: '';
             position: fixed;
-            width: 250px;
-            transition: all 0.3s;
-            z-index: 100;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(46, 125, 50, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 200, 83, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
-        .sidebar h4 {
-            color: #fff;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 0 15px;
+
+        /* Enhanced Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            box-shadow: var(--shadow-medium);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            height: 80px;
         }
-        .sidebar a {
-            color: #fff;
-            padding: 12px 20px;
+
+        .navbar-brand { 
+            color: white !important; 
+            font-weight: 600; 
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            text-decoration: none;
-            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+            color: var(--light-accent-color) !important;
+        }
+
+        .navbar-brand img {
+            width: 45px;
+            height: 45px;
+            margin-left: 12px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(129, 199, 132, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 15px rgba(129, 199, 132, 0.7);
+        }
+
+        /* Enhanced Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: calc(100vh - 80px);
+            padding: 30px 20px;
+            position: fixed;
+            width: 280px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            box-shadow: var(--shadow-large);
+            top: 80px;
+            right: 0;
+            left: auto;
+        }
+
+        .sidebar h4 { 
+            color: #fff; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 40px; 
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .sidebar h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--light-accent-color), transparent);
+            border-radius: 2px;
+        }
+
+        .sidebar a {
+            color: rgba(255, 255, 255, 0.9); 
+            padding: 15px 20px; 
+            display: flex; 
+            align-items: center;
+            text-decoration: none; 
+            font-size: 15px; 
             font-weight: 500;
-            border-radius: 8px;
-            margin: 0 10px 5px;
-            transition: all 0.3s;
+            border-radius: 12px; 
+            margin: 0 0 12px 0; 
+            transition: all 0.3s ease;
         }
-        .sidebar a i {
-            margin-right: 10px;
-            font-size: 18px;
+
+        .sidebar a i { 
+            margin-left: 15px; 
+            font-size: 20px; 
+            width: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
-        .sidebar a:hover, .sidebar .active {
-            background: var(--accent-color);
-            border-left: 4px solid #00d4ff;
+
+        .sidebar a:hover { 
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color)); 
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-medium);
+            color: white;
         }
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: all 0.3s;
+
+        .sidebar .active { 
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color)); 
+            box-shadow: var(--shadow-medium);
+            color: white;
+            border-right: 4px solid var(--light-accent-color);
         }
+
+        /* Enhanced Main Content */
+        .main-content { 
+            margin-right: 280px; 
+            padding: 30px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: calc(100vh - 80px);
+        }
+
+        .main-content h3 {
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            position: relative;
+            padding-right: 20px;
+            text-align: right;
+        }
+
+        .main-content h3::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 30px;
+            background: linear-gradient(180deg, var(--secondary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+
+        /* Enhanced Cards */
         .card-custom {
-            border-radius: 18px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-            border: none;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+            margin-bottom: 25px;
         }
+
+        .card-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card-custom:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-custom:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-large);
+            border-color: var(--accent-color);
+        }
+
         .card-header-custom {
-            background: white;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            border-radius: 18px 18px 0 0 !important;
-            padding: 15px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 20px 20px 0 0 !important;
+            padding: 20px 25px;
+            font-weight: 600;
+            color: var(--primary-color);
         }
+
         .form-label {
             font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 8px;
         }
+
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 200, 83, 0.25);
+        }
+
+        .form-select {
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 200, 83, 0.25);
+        }
+
         .btn-primary-custom {
             color: #fff;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
+
         .btn-primary-custom:hover {
             color: #fff;
-            background: var(--secondary-color);
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
         }
+
+        /* Enhanced Delete button styling */
+        .btn-delete {
+            color: var(--danger-color);
+            background: rgba(220, 53, 69, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-delete::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .btn-delete:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-delete:hover {
+            color: white;
+            background: var(--danger-color);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-delete i {
+            position: relative;
+            z-index: 1;
+        }
+
         .status-badge {
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
         }
+
         .status-paid {
             background: rgba(40, 167, 69, 0.1);
             color: #28a745;
         }
+
         .status-pending {
             background: rgba(255, 193, 7, 0.1);
             color: #ffc107;
         }
-        @media (max-width: 992px) {
-            .sidebar { width: 70px; text-align: center; }
-            .sidebar h4 { font-size: 0; }
-            .sidebar h4:after { content: "≡"; font-size: 24px; }
-            .sidebar a span { display: none; }
-            .sidebar a i { margin-right: 0; font-size: 20px; }
-            .main-content { margin-left: 70px; }
-        }
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; height: auto; position: relative; min-height: auto; }
-            .sidebar h4 { font-size: 18px; margin-bottom: 10px; }
-            .sidebar h4:after { content: ""; }
-            .sidebar a { display: inline-block; width: auto; margin: 5px; padding: 8px 15px; }
-            .sidebar a span { display: inline; }
-            .sidebar a i { margin-right: 5px; }
-            .main-content { margin-left: 0; }
-        }
+
         .table-responsive {
             border-radius: 10px;
+            overflow: hidden;
         }
+
+        .table {
+            margin-bottom: 0;
+        }
+
         .table th {
-            background: rgba(10, 23, 78, 0.05);
+            background: rgba(46, 125, 50, 0.05);
             font-weight: 600;
+            color: var(--primary-color);
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar { width: 260px; }
+            .main-content { margin-right: 260px; }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { 
+                width: 80px; 
+                text-align: center; 
+                padding: 20px 10px;
+            }
+            .sidebar h4 { 
+                font-size: 0; 
+                margin-bottom: 20px;
+            }
+            .sidebar h4:after { 
+                content: "☰"; 
+                font-size: 24px;
+                background: linear-gradient(45deg, #fff, var(--light-accent-color));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .sidebar a span { display: none; }
+            .sidebar a i { 
+                margin-left: 0; 
+                font-size: 22px; 
+            }
+            .sidebar a {
+                justify-content: center;
+                padding: 15px 10px;
+            }
+            .main-content { margin-right: 80px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 70px; }
+            .navbar { height: 70px; }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            .navbar-brand img {
+                width: 35px;
+                height: 35px;
+            }
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                position: relative; 
+                min-height: auto;
+                padding: 20px;
+                top: 0;
+                right: 0;
+            }
+            .sidebar h4 { 
+                font-size: 18px; 
+                margin-bottom: 15px;
+            }
+            .sidebar h4:after { content: ""; }
+            .sidebar a { 
+                display: inline-flex; 
+                width: auto; 
+                margin: 5px; 
+                padding: 10px 20px;
+            }
+            .sidebar a span { display: inline; }
+            .sidebar a i { margin-left: 8px; }
+            .main-content { 
+                margin-right: 0; 
+                padding: 20px;
+            }
+            .main-content h3 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--secondary-color), var(--primary-color));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--primary-color), #1B5E20);
+        }
+
+        /* Delete confirmation modal */
+        .delete-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .delete-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-large);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .delete-modal-icon {
+            font-size: 48px;
+            color: var(--danger-color);
+            margin-bottom: 15px;
+        }
+
+        .delete-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-confirm-delete {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm-delete:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel-delete {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel-delete:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- Messages Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container mt-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <i class="bi bi-atom me-2"></i>Club Scientifique
+                <!-- Logo SVG with Green Colors -->
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9InVybCgjZ3JhZDApIi8+CjxwYXRoIGQ9Ik0yMCAxMEMxNi40IDEwIDEzLjUgMTIuOSAxMy41IDE2LjVDMTMuNSAyMC4xIDE2LjQgMjMgMjAgMjNDMjMuNiAyMyAyNi41IDIwLjEgMjYuNSAxNi41QzI2LjUgMTIuOSAyMy42IDEwIDIwIDEwWiIgZmlsbD0iIzgxQzc4NCIvPgo8Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIzIiBmaWxsPSIjMkU3RDMyIi8+CjxwYXRoIGQ9Ik0yMCA4QzE0LjUgOCAxMCAxMi41IDEwIDE4QzEwIDIzLjUgMTQuNSAyOCAyMCAyOEMyNS41IDI4IDMwIDIzLjUgMzAgMThDMzAgMTIuNSAyNS41IDggMjAgOFoiIHN0cm9rZT0iIzgxQzc4NCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTIwIDZDMTMuNCA2IDggMTEuNCA4IDE4QzggMjQuNiAxMy40IDMwIDIwIDMwQzI2LjYgMzAgMzIgMjQuNiAzMiAxOEMzMiAxMS40IDI2LjYgNiAyMCA2WiIgc3Ryb2tlPSIjODFDNzg0IiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDAiIHgxPSIwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iNDAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzRDQUY1MCIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMyRTdEMzIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" alt="النادي العلمي">
+                النادي العلمي
             </a>
         </div>
     </nav>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4>Dashboard</h4>
-        <a href="/"><i class="bi bi-house-door"></i><span>Accueil</span></a>
-        <a href="/members.html" class="active"><i class="bi bi-people"></i><span>Membres</span></a>
-        <a href="/events"><i class="bi bi-calendar-event"></i><span>Événements</span></a>
-        <a href="/subscriptions"><i class="bi bi-card-checklist"></i><span>Abonnements</span></a>
+        <h4>لوحة التحكم</h4>
+        <a href="/">
+            <span>الرئيسية</span>
+            <i class="bi bi-house-door-fill"></i>
+        </a>
+        <a href="/members" class="active">
+            <span>الأعضاء</span>
+            <i class="bi bi-people-fill"></i>
+        </a>
+        <a href="/events">
+            <span>الفعاليات</span>
+            <i class="bi bi-calendar-event-fill"></i>
+        </a>
+        <a href="/subscriptions">
+            <span>الاشتراكات</span>
+            <i class="bi bi-card-checklist"></i>
+        </a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">Gestion des Membres</h3>
+            <h3 class="fw-bold">إدارة الأعضاء</h3>
         </div>
 
         <div class="row">
-            <!-- Liste des membres -->
+            <!-- قائمة الأعضاء -->
             <div class="col-lg-8">
                 <div class="card card-custom">
                     <div class="card-header card-header-custom d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Liste des Membres</h5>
+                        <h5 class="mb-0">قائمة الأعضاء</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Nom complet</th>
-                                        <th>Email</th>
-                                        <th class="d-none d-md-table-cell">Téléphone</th>
-                                        <th>Statut</th>
+                                        <th>الاسم الكامل</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th class="d-none d-md-table-cell">الهاتف</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,10 +634,15 @@
                                         <td class="d-none d-md-table-cell">{{ member.phone }}</td>
                                         <td>
                                             {% if member.subscription_status.lower() == 'paid' %}
-                                            <span class="status-badge status-paid">Payé</span>
+                                            <span class="status-badge status-paid">مدفوع</span>
                                             {% else %}
-                                            <span class="status-badge status-pending">En attente</span>
+                                            <span class="status-badge status-pending">في الانتظار</span>
                                             {% endif %}
+                                        </td>
+                                        <td>
+                                            <button class="btn-delete" onclick="showDeleteModal('{{ member.id }}', '{{ member.full_name }}')" title="حذف العضو">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -199,50 +653,50 @@
                 </div>
             </div>
             
-            <!-- Formulaire ajout -->
+            <!-- نموذج الإضافة -->
             <div class="col-lg-4">
                 <div class="card card-custom">
                     <div class="card-header card-header-custom">
-                        <h5 class="mb-0">Ajouter un Membre</h5>
+                        <h5 class="mb-0">إضافة عضو</h5>
                     </div>
                     <div class="card-body">
                        <form method="POST">
                             <div class="mb-3">
-                                <label class="form-label">Nom complet</label>
-                                <input type="text" class="form-control" name="full_name" placeholder="Nom complet" required>
+                                <label class="form-label">الاسم الكامل</label>
+                                <input type="text" class="form-control" name="full_name" placeholder="الاسم الكامل" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Email" required>
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-control" name="email" placeholder="البريد الإلكتروني" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Téléphone</label>
-                                <input type="text" class="form-control" name="phone" placeholder="Téléphone">
+                                <label class="form-label">الهاتف</label>
+                                <input type="text" class="form-control" name="phone" placeholder="الهاتف">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Adresse</label>
-                                <input type="text" class="form-control" name="address" placeholder="Adresse">
+                                <label class="form-label">العنوان</label>
+                                <input type="text" class="form-control" name="address" placeholder="العنوان">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Date d'adhésion</label>
+                                <label class="form-label">تاريخ الانضمام</label>
                                 <input type="date" class="form-control" name="join_date" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Compétences</label>
-                                <input type="text" class="form-control" name="skills" placeholder="Séparer par des virgules">
+                                <label class="form-label">المهارات</label>
+                                <input type="text" class="form-control" name="skills" placeholder="افصل بين المهارات بفاصلة">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Centres d'intérêt</label>
-                                <input type="text" class="form-control" name="interests" placeholder="Séparer par des virgules">
+                                <label class="form-label">الاهتمامات</label>
+                                <input type="text" class="form-control" name="interests" placeholder="افصل بين الاهتمامات بفاصلة">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Statut d'abonnement</label>
+                                <label class="form-label">حالة الاشتراك</label>
                                 <select class="form-select" name="subscription_status">
-                                    <option value="paid">Payé</option>
-                                    <option value="pending">En attente</option>
+                                    <option value="paid">مدفوع</option>
+                                    <option value="pending">في الانتظار</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary-custom w-100">Ajouter le membre</button>
+                            <button type="submit" class="btn btn-primary-custom w-100">إضافة العضو</button>
                         </form>
                     </div>
                 </div>
@@ -250,6 +704,44 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="delete-modal">
+        <div class="delete-modal-content">
+            <div class="delete-modal-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h4>تأكيد الحذف</h4>
+            <p>هل أنت متأكد من حذف العضو: <span id="memberName"></span>؟</p>
+            <p>هذا الإجراء لا يمكن التراجع عنه.</p>
+            <div class="delete-modal-buttons">
+                <button class="btn-cancel-delete" onclick="hideDeleteModal()">إلغاء</button>
+                <form id="deleteForm" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-confirm-delete">حذف</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showDeleteModal(memberId, memberName) {
+            document.getElementById('memberName').textContent = memberName;
+            document.getElementById('deleteForm').action = '/members/delete/' + memberId;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target == modal) {
+                hideDeleteModal();
+            }
+        }
+    </script>
 </body>
+{% comment %} ebd  {% endcomment %}
 </html>
